@@ -14,15 +14,15 @@ public class Char {
 		this.frequency = 1;
 	}
 	
+	public int getCharValue(){
+		return this.charValue;
+	}
+	
 	/**
 	 * 又一次出现了这个汉字，将之出现频率+1
 	 */
 	public void increaseFrequency(){
 		this.frequency++;
-	}
-	
-	public void findSameChar(){
-		frequency ++;
 	}
 	
 	@Override

@@ -46,6 +46,7 @@ public class LineScanner {
 		return true;
 	}
 	
+
 	public String nextWord(){
 		//当前行还有没有处理的数据
 		if (words!= null &&

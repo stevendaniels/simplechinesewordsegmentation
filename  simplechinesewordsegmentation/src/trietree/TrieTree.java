@@ -12,6 +12,11 @@ public class TrieTree {
 	 */
 	private HashMap<Integer, TrieTreeNode> firstChars;
 	
+	public TrieTreeNode getWordRefference(Char firstChar){
+		int charValue = firstChar.getCharValue();
+		return firstChars.get(charValue);
+	}
+	
 	/**
 	 * 构造函数
 	 * 直接由“训练数据”文件中的文本生成词典
@@ -46,7 +51,7 @@ public class TrieTree {
 			currentNode = suffixNode;
 			suffixNode = processOneChar (charactor, currentNode);
 		}
-		suffixNode.isLastChar();
+		suffixNode.setLastChar();
 	}
 	
 	/**
@@ -81,9 +86,9 @@ public class TrieTree {
 	
 	public static void main(String[] args){
 		//TODO: The entrance of this program is here.
-		TrieTree tree = new TrieTree("E:\\test.txt");
+		TrieTree tree = new TrieTree("data\\test.txt");
 		String treeContent = ObjectWriterToXML.toXML(tree);
-		ObjectWriterToXML.toFile("E:\\result.xml");
+		ObjectWriterToXML.toFile("data\\result.xml");
 		System.out.println(treeContent);
 		
 //		getMinPrimer(5283);

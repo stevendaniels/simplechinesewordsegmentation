@@ -14,16 +14,7 @@ public class WordScanner {
 	
 	public WordScanner(String word) {
 		charactors = word.split(" ");
-	}	
-	
-//	public boolean getWord(){
-//		if (word != null && word.length() != 0){
-//			charactors = word.split(" ");
-//			iterator = 0;
-//			return true;
-//		}
-//		return false;
-//	}
+	}
 	
 	/**
 	 * 返回汉字对应的数值
@@ -36,12 +27,6 @@ public class WordScanner {
 				return Integer.valueOf(strC);
 		}
 		return -1;
-		
-		//当前的词中已经没有更多的字了，再索要一个词
-//		if(getWord()){
-//			return charactors[iterator++].trim();
-//		}
-//		return null;
 	}
 	
 	@Override
