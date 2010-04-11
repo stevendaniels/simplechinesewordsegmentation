@@ -28,4 +28,9 @@ public class WordInfo {
 		this.isWord = true;
 		this.frequency ++;
 	}
+	
+	public boolean isLast()
+	{
+		return isWord;
+	}
 }

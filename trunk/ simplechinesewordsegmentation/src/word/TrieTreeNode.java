@@ -12,7 +12,9 @@ public class TrieTreeNode {
 		this.info = new WordInfo();
 		this.next = null;
 	}
-	
+	/**
+	 * 在训练数据处理中，这个字又出现了一次
+	 */
 	public void meetAgain(){
 		c.increaseFrequency();
 	}
@@ -40,8 +42,21 @@ public class TrieTreeNode {
 	/**
 	 * 当前节点对应了一个词的最后一个字
 	 */
-	public void isLastChar(){
+	public void setLastChar(){
 		info.meetLastChar();
+	}
+	
+	/**
+	 * 测试当前节点是否可以作为一个词的最后一个字
+	 * @return
+	 */
+	public boolean isLast (){
+		return info.isLast();
+	}
+	
+	public TrieTreeNode getNextByChar (Char c)
+	{
+		return next.get(c.getCharValue());
 	}
 	
 	@Override
