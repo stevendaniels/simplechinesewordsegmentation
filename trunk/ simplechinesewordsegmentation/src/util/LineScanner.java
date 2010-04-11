@@ -36,7 +36,7 @@ public class LineScanner {
 		}
 		
 		if(line ==null || line.length() == 0){
-			System.err.println("no more data in the file");
+			System.out.println("all data in the file processed");
 			words = null;
 			return false;
 		}

@@ -30,13 +30,17 @@ public class TrieTree {
 		//共有5283个字符，比它大的最小质数为5297，装载因子设置为0.75
 		firstChars = new HashMap<Integer, TrieTreeNode>(7100); 
 		String word = null;
-		while((word = lines.nextWord()) != null){
+		int i = 0;
+		while((word = lines.nextWord()) != null)
+		{
 			getOneWord(word);
+			i++;
 		}
+		System.out.println("totally trained "+i+" words");
 	}
 	
 	/**
-	 * 处理一个词
+	 * 处理一个词，将该词存入Trie Tree词典中
 	 * 
 	 * @param oneWord
 	 */
