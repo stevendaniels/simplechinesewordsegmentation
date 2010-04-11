@@ -1,8 +1,11 @@
 package segment;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import trietree.TrieTree;
+import util.FileHandle;
 import word.*;
 
 /**
@@ -37,7 +40,7 @@ public class Segmentation
 	
 	/**
 	 * Constructor
-	 * 根据输入的训练数据的文件路径，获取字典引用
+	 * 根据输入的训练数据的文件路径
 	 * 获取字典引用
 	 * @param trainingFilePath 训练数据的文件路径
 	 */
@@ -109,15 +112,15 @@ public class Segmentation
 		Char currentChar = lineChars[start];							//当前这个字作为一个词的首字
 		TrieTreeNode node = dictionary.getWordRefference(currentChar);	//在首字典中查找该字
 		
-		while ( iterator < lineChars.length )							//直到搜索完当前行
+		while ( iterator < lineChars.length )	//直到搜索完当前行
 		{
-			if (node.isLast()) {	//标记找到的最后一个可以作为词结尾的字
-				end = iterator;		//当最大匹配完成却不是一个词时，将从此处截断
-			}
-			
 			if ( node == null ) 	//最大匹配完成
 				break;
 			
+			if (node.isLast()) {	//标记找到的最后一个可以作为词结尾的字
+				end = iterator;		//当最大匹配完成却不是一个词时，将从此处截断
+			}
+						
 			currentChar = lineChars[iterator++];	//读取下一个字
 			node = node.getNextByChar(currentChar);	//在词典当前节点搜索新读入的字的后缀
 		}
@@ -143,7 +146,66 @@ public class Segmentation
 	}
 	
 	public static void main(String[] args){
+		String trainingFile = "D:\\code\\java\\computationalLinguistics\\data\\mytest\\my_simple_training.txt";
+		String testingFile = "D:\\code\\java\\computationalLinguistics\\data\\mytest\\my_simple_testing.txt";
+		String resultFile = "D:\\code\\java\\computationalLinguistics\\data\\mytest\\my_simple_result.txt";
+		FileWriter resultOutput ;
 		
+		try			//创建输出流
+		{
+			resultOutput = new FileWriter(new File(resultFile));
+		}
+		catch( IOException e)
+		{
+			throw new RuntimeException();
+		}
+		
+//		//生成分词器，输入训练数据，初始化词典
+		Segmentation seg = new Segmentation(trainingFile);
+//		//输入测试数据
+		FileHandle testingFileHandle = new FileHandle(testingFile);
+		String oneLineTesting;
+		while( true)
+		{
+			try
+			{
+				oneLineTesting = testingFileHandle.readline();
+				System.out.println(oneLineTesting);
+			}
+			catch (NoSuchElementException e) 
+			{
+				System.out.println("all testing data processed");
+				break;
+			}
+			
+			displayOneLineResult(resultOutput ,seg, oneLineTesting);	
+			
+		}
+	}
+	
+	private static void displayOneLineResult(Writer output, Segmentation seg, String oneLineTesting)
+	{
+		seg.inputNextLine(oneLineTesting);
+		ArrayList<Char> w;
+
+		while ( (w = seg.nextWord()) != null)
+		{
+		 	Word word = new Word(w);
+		 	appendToResult ( output,word);
+		}
+	}
+	
+	private static void appendToResult (Writer output, Word word) 
+	{
+		FileWriter resultOutput  = (FileWriter) output;
+		String strWord = word.toString();
+		System.out.println(strWord);
+		try {
+			resultOutput.write(strWord);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		}
 	}
 	
 }

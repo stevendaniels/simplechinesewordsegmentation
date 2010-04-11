@@ -43,6 +43,6 @@ public class Char {
 	
 	@Override
 	public String toString(){
-		return charValue + " with " + frequency;
+		return String.valueOf(charValue);
 	}
 }

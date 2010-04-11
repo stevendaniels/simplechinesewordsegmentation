@@ -1,6 +1,7 @@
 package util;
 
 import java.io.*;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Scanner;
  */
 public class FileHandle {
 	
-	static Scanner sc = null;
+	Scanner sc = null;
 	
 	public FileHandle(String file){
 		initialize(file,  "UTF-8");
@@ -24,8 +25,7 @@ public class FileHandle {
 	
 	private void initialize(String file, String charset){
 		try {
-			if (sc == null)
-				sc = new Scanner(new File(file), charset);
+			sc = new Scanner(new File(file), charset);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			throw new RuntimeException();
@@ -42,11 +42,21 @@ public class FileHandle {
 	}
 	
 	public static void main(String[] args){
-		FileHandle fl = new FileHandle("E:\\test.txt");
-		String line = fl.readline();
-		if (line != null)
-			System.out.println(line);
-		else
-			System.out.println("No line");
+		String testingFile = "D:\\code\\java\\computationalLinguistics\\data\\mytest\\my_simple_testing.txt";
+		FileHandle fl = new FileHandle(testingFile);
+		String line;
+		while( true)
+		{
+			try
+			{
+				line = fl.readline();
+				System.out.println(line);
+			}
+			catch (NoSuchElementException e) 
+			{
+				System.err.println("all testing data processed");
+				break;
+			}
+		}
 	}
 }

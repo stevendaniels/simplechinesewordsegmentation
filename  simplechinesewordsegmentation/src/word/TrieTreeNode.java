@@ -56,6 +56,8 @@ public class TrieTreeNode {
 	
 	public TrieTreeNode getNextByChar (Char c)
 	{
+		if ( this.next == null)
+			return null;
 		return next.get(c.getCharValue());
 	}
 	
