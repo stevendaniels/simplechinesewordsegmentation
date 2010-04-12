@@ -34,6 +34,7 @@ public class TrieTree {
 		while((word = lines.nextWord()) != null)
 		{
 			getOneWord(word);	//处理一个词，将该词存入Trie Tree词典中
+			System.out.println("TrieTree.java:\tI am learning this word: "+word);
 			i++;
 		}
 		System.out.println("totally trained "+i+" words");
