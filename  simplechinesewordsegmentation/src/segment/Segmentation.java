@@ -2,6 +2,7 @@ package segment;
 
 import java.util.ArrayList;
 
+import toXML.ObjectWriterToXML;
 import trietree.TrieTree;
 import word.*;
 //import toXML.ObjectWriterToXML;
@@ -56,8 +57,8 @@ public class Segmentation
 	public void getDictionary(String trainingFilePath)
 	{
 		this.dictionary = new TrieTree(trainingFilePath);
-//		ObjectWriterToXML.toXML(this.dictionary);
-//		ObjectWriterToXML.toFile("data\\dictionary.xml");
+		ObjectWriterToXML.toXML(this.dictionary);
+		ObjectWriterToXML.toFile("data\\dictionary.xml");
 	}
 	
 	/**
@@ -69,12 +70,16 @@ public class Segmentation
 	public void inputNextLine (String line)
 	{
 		String[] strWords = line.split(" ");
-		this.lineChars = new Char[strWords.length];
-		for(int i = 0; i < this.lineChars.length; i++)
+		ArrayList<Char> chars = new ArrayList<Char>();
+		for(int i = 0; i < strWords.length; i++)
 		{
-			Char c = new Char(strWords[i]);
-			this.lineChars[i] = c;
+			try{
+				Char c = new Char(strWords[i]);
+				chars.add(c);
+			}catch (NumberFormatException e) {}
 		}
+		this.lineChars =new Char[chars.size()];
+		chars.toArray(this.lineChars);
 		this.iterator = 0;
 	}
 	

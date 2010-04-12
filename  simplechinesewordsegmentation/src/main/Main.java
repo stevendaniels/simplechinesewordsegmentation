@@ -1,22 +1,19 @@
 package main;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
+import java.io.*;
+import java.util.*;
 
 import segment.Segmentation;
 import util.FileHandle;
-import word.Char;
-import word.Word;
+import word.*;
 
 public class Main {
+	static String trainingFile="";
+	static String testingFile="";
+	static String resultFile="";
+	
 	public static void main(String[] args){
-		String trainingFile = "data\\mytest\\my_simple_training.txt";
-		String testingFile = "data\\mytest\\my_simple_testing.txt";
-		String resultFile = "data\\mytest\\my_simple_result.txt";
+		getProperties();
 		FileWriter resultOutput ;
 		
 		try			//创建输出流
@@ -25,11 +22,16 @@ public class Main {
 		}
 		catch( IOException e)
 		{
+			e.printStackTrace();
 			throw new RuntimeException();
 		}
 		
 //		//生成分词器，输入训练数据，初始化词典
 		Segmentation seg = new Segmentation(trainingFile);
+		//TODO : 词典还有错呢……5555……
+		System.out.println("generate dictionary success");
+		System.out.println("**********************************");
+		
 //		//输入测试数据
 		FileHandle testingFileHandle = new FileHandle(testingFile);
 		String oneLineTesting;
@@ -38,7 +40,7 @@ public class Main {
 			try
 			{
 				oneLineTesting = testingFileHandle.readline();
-				System.out.println(oneLineTesting);
+				System.out.println("Main.java\t: I am segementing this line: "+oneLineTesting);
 			}
 			catch (NoSuchElementException e) 
 			{
@@ -52,7 +54,7 @@ public class Main {
 		{
 			resultOutput.flush();
 		}
-		catch (Exception e)
+		catch (IOException e)
 		{
 			throw new RuntimeException();
 		}
@@ -72,6 +74,7 @@ public class Main {
 		while ( (w = seg.nextWord()) != null)
 		{
 		 	Word word = new Word(w);
+		 	System.out.println("Main.java: display: I've got a new word!\t"+ word.toString());
 		 	appendToResult ( output, word );
 		 	appendToResult ( output, "| " );
 		}
@@ -87,7 +90,7 @@ public class Main {
 	{
 		FileWriter resultOutput  = (FileWriter) output;
 		String strWord = word.toString();
-		System.out.println(strWord);
+		
 		try {
 			resultOutput.write(strWord);
 		} catch (IOException e) {
@@ -104,6 +107,20 @@ public class Main {
 			e.printStackTrace();
 			throw new RuntimeException();
 		}
+	}
+	
+	private static void getProperties(){
+		Properties p = new Properties();
+		try {
+			p.load(new FileInputStream(new File("filepath.property")));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		}
+		
+		trainingFile = p.getProperty("trainingFile");
+		testingFile = p.getProperty("testingFile");
+		resultFile = p.getProperty("resultFile");
 	}
 	
 }

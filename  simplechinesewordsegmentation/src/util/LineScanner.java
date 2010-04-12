@@ -15,13 +15,15 @@ public class LineScanner {
 	 * 一行文本，不包含换行符
 	 */
 	
-	static FileHandle fileHandle;
+	
+	private FileHandle fileHandle;
+	private String filepath;
 	private String[] words;
 	private int iterator;
 	
 	public LineScanner(String filePath){
-		if (fileHandle == null)
-			fileHandle = new FileHandle(filePath);
+		this.filepath = filepath;
+		fileHandle = new FileHandle(filePath);
 		getLine();
 	}
 	
@@ -36,7 +38,7 @@ public class LineScanner {
 		}
 		
 		if(line ==null || line.length() == 0){
-			System.out.println("all data in the file processed");
+			System.out.println("all data in "+filepath+" processed");
 			words = null;
 			return false;
 		}
