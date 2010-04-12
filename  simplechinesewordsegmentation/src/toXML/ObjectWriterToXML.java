@@ -29,9 +29,6 @@ public class ObjectWriterToXML {
 			e.printStackTrace();
 			throw new RuntimeException();
 		}
-		
-		
-		
 	}
 
 }
