@@ -33,7 +33,7 @@ public class TrieTree {
 		int i = 0;
 		while((word = lines.nextWord()) != null)
 		{
-			getOneWord(word);
+			getOneWord(word);	//处理一个词，将该词存入Trie Tree词典中
 			i++;
 		}
 		System.out.println("totally trained "+i+" words");
@@ -89,7 +89,6 @@ public class TrieTree {
 	
 	
 	public static void main(String[] args){
-		//TODO: The entrance of this program is here.
 		TrieTree tree = new TrieTree("data\\test.txt");
 		String treeContent = ObjectWriterToXML.toXML(tree);
 		ObjectWriterToXML.toFile("data\\result.xml");

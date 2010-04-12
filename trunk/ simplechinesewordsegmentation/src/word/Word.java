@@ -30,7 +30,7 @@ public class Word {
 			sb.append(word.get(i).toString());
 			sb.append(' ');
 		}
-		sb.append('|');
+		//sb.append('|');
 		return sb.toString();
 	}
 	

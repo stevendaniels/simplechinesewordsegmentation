@@ -1,12 +1,10 @@
 package segment;
 
-import java.io.*;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 import trietree.TrieTree;
-import util.FileHandle;
 import word.*;
+//import toXML.ObjectWriterToXML;
 
 /**
  * 利用最大匹配法对文本进行分词
@@ -18,17 +16,17 @@ public class Segmentation
 	/**
 	 * 字典
 	 */
-	TrieTree dictionary;
+	protected TrieTree dictionary;
 	
 	/*
 	 * 将输入的一行数据，拆解成以Char类型的各个单字，保存在这个数组中
 	 */
-	private Char[] lineChars;
+	protected Char[] lineChars;
 	
 	/*
 	 * 当前行的处理到的字的游标
 	 */
-	private int iterator;
+	protected int iterator;
 	
 	
 	/**
@@ -58,6 +56,8 @@ public class Segmentation
 	public void getDictionary(String trainingFilePath)
 	{
 		this.dictionary = new TrieTree(trainingFilePath);
+//		ObjectWriterToXML.toXML(this.dictionary);
+//		ObjectWriterToXML.toFile("data\\dictionary.xml");
 	}
 	
 	/**
@@ -101,31 +101,42 @@ public class Segmentation
 	
 	
 	/**
+	 * 算法核心
+	 * 最大匹配 分词法
 	 * 从给定的start处，搜寻在词典中匹配到的词的结尾处
 	 * @param start	开始搜寻的首字
 	 * @return		词的结尾位置
 	 */
-	private int getWordEnd(int start) 
+	protected int getWordEnd(int start) 
 	{
-		int end=start;
+		int end=start+1;
 		
 		Char currentChar = lineChars[start];							//当前这个字作为一个词的首字
 		TrieTreeNode node = dictionary.getWordRefference(currentChar);	//在首字典中查找该字
 		
+		if (node == null) {	//首字典中无此字
+			return end;
+		}
+		
 		while ( iterator < lineChars.length )	//直到搜索完当前行
 		{
 			if ( node == null ) 	//最大匹配完成
-				break;
+				break;				//即上一个字没有后缀，上一次循环必然标记了end
 			
 			if (node.isLast()) {	//标记找到的最后一个可以作为词结尾的字
 				end = iterator;		//当最大匹配完成却不是一个词时，将从此处截断
 			}
 						
 			currentChar = lineChars[iterator++];	//读取下一个字
-			node = node.getNextByChar(currentChar);	//在词典当前节点搜索新读入的字的后缀
+			node = node.getNextByChar(currentChar);	//在词典搜索：以currentChar为后缀的词，返回后缀的引用
 		}
 		
-		this.iterator = end + 1;					//end之后的字不算被处理
+		if (iterator == lineChars.length)		//遍历到最后
+			if (node != null && node.isLast())
+				end = iterator;
+			
+		
+		this.iterator = end;					//end之后的字不算被处理
 		return end;
 	}
 	
@@ -145,67 +156,5 @@ public class Segmentation
 		return word;
 	}
 	
-	public static void main(String[] args){
-		String trainingFile = "D:\\code\\java\\computationalLinguistics\\data\\mytest\\my_simple_training.txt";
-		String testingFile = "D:\\code\\java\\computationalLinguistics\\data\\mytest\\my_simple_testing.txt";
-		String resultFile = "D:\\code\\java\\computationalLinguistics\\data\\mytest\\my_simple_result.txt";
-		FileWriter resultOutput ;
-		
-		try			//创建输出流
-		{
-			resultOutput = new FileWriter(new File(resultFile));
-		}
-		catch( IOException e)
-		{
-			throw new RuntimeException();
-		}
-		
-//		//生成分词器，输入训练数据，初始化词典
-		Segmentation seg = new Segmentation(trainingFile);
-//		//输入测试数据
-		FileHandle testingFileHandle = new FileHandle(testingFile);
-		String oneLineTesting;
-		while( true)
-		{
-			try
-			{
-				oneLineTesting = testingFileHandle.readline();
-				System.out.println(oneLineTesting);
-			}
-			catch (NoSuchElementException e) 
-			{
-				System.out.println("all testing data processed");
-				break;
-			}
-			
-			displayOneLineResult(resultOutput ,seg, oneLineTesting);	
-			
-		}
-	}
-	
-	private static void displayOneLineResult(Writer output, Segmentation seg, String oneLineTesting)
-	{
-		seg.inputNextLine(oneLineTesting);
-		ArrayList<Char> w;
-
-		while ( (w = seg.nextWord()) != null)
-		{
-		 	Word word = new Word(w);
-		 	appendToResult ( output,word);
-		}
-	}
-	
-	private static void appendToResult (Writer output, Word word) 
-	{
-		FileWriter resultOutput  = (FileWriter) output;
-		String strWord = word.toString();
-		System.out.println(strWord);
-		try {
-			resultOutput.write(strWord);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException();
-		}
-	}
 	
 }
