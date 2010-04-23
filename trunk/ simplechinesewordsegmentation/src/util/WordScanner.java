@@ -14,6 +14,8 @@ public class WordScanner {
 	
 	public WordScanner(String word) {
 		charactors = word.split(" ");
+		for (int i = 0; i < charactors.length; i++) 
+			charactors[i] =charactors[i].trim(); 
 	}
 	
 	/**

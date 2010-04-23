@@ -1,0 +1,5 @@
+number of tokens in result = 994299
+number of tokens in reference = 1000150
+number of correct segmented tokens = 974253
+precision = 0.979839
+recall = 0.974107

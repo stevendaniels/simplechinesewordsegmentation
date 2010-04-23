@@ -88,15 +88,8 @@ public class Main {
 	 */
 	private static void appendToResult (Writer output, Word word) 
 	{
-		FileWriter resultOutput  = (FileWriter) output;
 		String strWord = word.toString();
-		
-		try {
-			resultOutput.write(strWord);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException();
-		}
+		appendToResult (output, strWord);
 	}
 	
 	private static void appendToResult (Writer output, String content) {
@@ -118,9 +111,10 @@ public class Main {
 			throw new RuntimeException();
 		}
 		
-		trainingFile = p.getProperty("trainingFile");
-		testingFile = p.getProperty("testingFile");
-		resultFile = p.getProperty("resultFile");
+		String directorypath = p.getProperty("directorypath");
+		trainingFile = directorypath + p.getProperty("trainingFile");
+		testingFile = directorypath + p.getProperty("testingFile");
+		resultFile = directorypath + p.getProperty("resultFile");
 	}
 	
 }

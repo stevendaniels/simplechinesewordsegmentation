@@ -1,0 +1,4 @@
+directorypath=D:\\code\\java\\computationalLinguistics\\data\\corpus-training\\
+trainingFile=corpus-training-digit.utf-8.txt
+testingFile=corpus-testing-digit.utf-8.txt
+resultFile=my_result.txt

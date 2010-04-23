@@ -21,9 +21,9 @@ public class LineScanner {
 	private String[] words;
 	private int iterator;
 	
-	public LineScanner(String filePath){
-		this.filepath = filepath;
-		fileHandle = new FileHandle(filePath);
+	public LineScanner(String file){
+		this.filepath = file;
+		fileHandle = new FileHandle(file);
 		getLine();
 	}
 	
@@ -32,18 +32,31 @@ public class LineScanner {
 		//从文件中读取一行，不包含换行符
 		String line ;
 		try{
-			line = fileHandle.readline();
+			while (true) {
+				line = fileHandle.readline();
+				if(line ==null){
+					System.out.println("all data in "+filepath+" processed");
+					words = null;
+					return false;
+				}
+				if (line.length() > 1) {
+					break;
+				}
+			}
 		} catch (NoSuchElementException e) {
 			line = null;
-		}
-		
-		if(line ==null || line.length() == 0){
 			System.out.println("all data in "+filepath+" processed");
 			words = null;
 			return false;
 		}
+		
+		
+		
+		
 		//将该行数据以 | 为分割拆分成词
 		words = line.split("\\|");
+		for (int i = 0; i < words.length; i++) 
+			words[i] = words[i].trim();
 		iterator = 0;
 		return true;
 	}
