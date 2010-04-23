@@ -51,14 +51,14 @@ public class Segmentation
 	
 	/**
 	 * 根据输入的训练数据的文件路径，获取字典引用
-	 * 获取字典引用
+	 * 
 	 * @param trainingFilePath 训练数据的文件路径
 	 */
 	public void getDictionary(String trainingFilePath)
 	{
 		this.dictionary = new TrieTree(trainingFilePath);
-		ObjectWriterToXML.toXML(this.dictionary);
-		ObjectWriterToXML.toFile("data\\dictionary.xml");
+//		ObjectWriterToXML.toXML(this.dictionary);
+//		ObjectWriterToXML.toFile("data\\dictionary.xml");
 	}
 	
 	/**

@@ -6,10 +6,11 @@ import string
 def evaluate_digit(resultfilename,referencefilename):
 
     resultfile=codecs.open(resultfilename,"r","utf-8")
-    resulttokenlist=[]
+    resulttokenlist=[] #store all token in the result file to this list
     for resultline in resultfile:
         resulttokenlist.extend([x.strip().split() for x in resultline.strip().split("|")])
     resultfile.close()
+	
     resultposit=0
     resultoccurset=set()
     for resulttoken in resulttokenlist:
